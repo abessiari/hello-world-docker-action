@@ -14,4 +14,7 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      - name: Build docker image
+        run: |
+          docker build -f docker/Dockerfile -t purl:latest .
       - run: echo "🍏 This job's status is ${{ job.status }}."
