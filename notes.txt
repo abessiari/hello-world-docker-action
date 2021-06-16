@@ -1,3 +1,6 @@
+GITHUB ACTIONS:
+
+
 conda avtivate test_purl_obolibrary
 PR: https://github.com/OBOFoundry/purl.obolibrary.org/pull/747
 added a task to install s3cmd and a task to test s3 access to bucket using s3 ls.
