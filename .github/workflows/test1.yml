@@ -14,4 +14,4 @@ jobs:
           docker build -f docker/Dockerfile -t purl:latest .
       - name: Run Tests 
         run: |
-          docker run -t purl:latest ls -l /
+          docker run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
