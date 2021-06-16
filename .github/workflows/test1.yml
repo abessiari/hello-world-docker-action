@@ -47,5 +47,6 @@ jobs:
 
       - name: Run Tests 
         run: |
-          docker buildx run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
+          # docker buildx run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
+          docker buildx run -t purl:latest ls -l  
 
