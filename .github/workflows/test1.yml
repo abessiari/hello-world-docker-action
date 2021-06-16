@@ -1,5 +1,8 @@
 name: GitHub Actions Demo
 on:
+  push:
+     branches: [ main ]
+
   pull_request:
      branches: [ main ]
 
@@ -51,5 +54,5 @@ jobs:
 
       - name: Run Tests 
         run: |
-          docker run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test2
+          docker run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test
 
