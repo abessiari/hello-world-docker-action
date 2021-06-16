@@ -40,12 +40,12 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-      - name: Run Tests 
-        run: |
-          docker buildx run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
-
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+      - name: Run Tests 
+        run: |
+          docker buildx run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
 
