@@ -42,7 +42,7 @@ jobs:
 
       - name: Run Tests 
         run: |
-          docker run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
+          docker buildx run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
 
       - name: Move cache
         run: |
