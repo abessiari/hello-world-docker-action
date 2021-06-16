@@ -36,6 +36,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           file: docker/Dockerfile
           push: false 
+          load: true
           tags: ${{ steps.prep.outputs.tagged_image }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
@@ -48,5 +49,5 @@ jobs:
       - name: Run Tests 
         run: |
           # docker buildx run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
-          docker buildx run -t purl:latest ls -l  
+          docker run -t purl:latest ls -l  
 
