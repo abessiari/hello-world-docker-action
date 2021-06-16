@@ -1,0 +1,31 @@
+    1  cd /purl/tools/
+    2  which git
+    3  which pip
+    4  pip list
+    5  ls
+    6  vi site.yml 
+    7  pwd
+    8  cat ../.travis.yml 
+    9  echo 'localhost' > hosts
+   10  ansible-playbook -i hosts ' --connection=local site.ym
+   11  ansible-playbook  site.yml
+   12  apt-get update
+   13  ansible-playbook  site.yml
+   14  vi site.yml 
+   15  ansible-playbook  site.yml
+   16  apt-get update
+   17  apt-get install ppa-purge
+   18  apt-get update
+   19  ppa-purge http://ppa.launchpad.net/jonathonf/python-2.7/ubuntu/dists/trusty/main/binary-amd64/Packages
+   20  apt-get update
+   21  ls /etc/apt/sources.list.d
+   22  cat /etc/apt/sources.list.d/jonathonf-python-2_7-trusty.list 
+   23  ppa-purge http://ppa.launchpad.net/jonathonf/python-2.7/ubuntu
+   24  cat /etc/apt/sources.list.d/jonathonf-python-2_7-trusty.list 
+   25  rm  /etc/apt/sources.list.d/jonathonf-python-2_7-trusty.list 
+   26  ls /etc/apt/sources.list.d
+   27  apt-get update
+   28  ansible-playbook  site.yml
+   29  history
+   30  ls
+   31  history > ../hist.txt

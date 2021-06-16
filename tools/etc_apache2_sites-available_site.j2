@@ -1,0 +1,20 @@
+<VirtualHost *:80>
+    ServerName {{ domain }}
+
+    # Root directory:
+    # the only Option is FollowSymLinks (not ExecCGI, Includes, Indexes)
+    # the only AllowOverride is FileInfo (not Options)
+    # see https://httpd.apache.org/docs/current/mod/core.html#allowoverride
+    DocumentRoot {{ repo_dir }}/www
+    <Directory {{ repo_dir }}/www>
+      AllowOverride FileInfo
+      Options FollowSymLinks
+      Order allow,deny
+      Allow from all
+    </Directory>
+
+    # Custom access log in "Common Log Format (CLF)" plus Referer, User-agent, and Location
+    # See http://httpd.apache.org/docs/2.4/mod/mod_log_config.html
+    CustomLog /var/log/apache2/{{ domain }}.access.log "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" \"%{Location}o\""
+    ErrorLog /var/log/apache2/{{ domain }}.error.log
+</VirtualHost>

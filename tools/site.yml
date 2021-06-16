@@ -1,0 +1,73 @@
+---
+# This is an Ansible playbook specifying the instructions for deploying the purl.obolibrary.org site.
+
+- hosts: all
+  user: ubuntu
+  become: True
+  become_method: sudo
+  gather_facts: True
+
+  vars:
+    mode:      production
+    domain:    purl.obolibrary.org
+    owner:     OBOFoundry
+    repo:      purl.obolibrary.org
+    repo_dir:  "/var/www/{{ repo }}"
+    repo_url:  "https://github.com/{{ owner }}/{{ repo }}.git"
+    cron_job:  "cd {{ repo_dir }} && make safe-update"
+
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted
+
+  tasks:
+    - name: Update apt-get cache
+      shell: "apt-get update"
+
+    - name: Install system-wide packages (not Travis)
+      when: mode != "travis"
+      apt: pkg={{ item }} state=present
+      with_items:
+        - ntp
+        - git
+        - python3
+
+    - name: Install system-wide packages (All)
+      apt: pkg={{ item }} state=present
+      with_items:
+        - apache2
+        - python3-pip
+
+    - name: Install PyYAML
+      pip: name=PyYAML executable=pip3
+
+    - name: Install pathlib2 for jsonschema
+      pip: name=pathlib2 executable=pip3
+
+    - name: Install jsonschema
+      pip: name=jsonschema==3.0.2 executable=pip3
+
+    - name: Clone the Git repo
+      when: mode == "production"
+      git: repo={{ repo_url }} dest={{ repo_dir }}
+
+    - name: Immediately update the PURLs
+      when: mode == "production"
+      shell: "{{ cron_job }}; exit 0"
+
+    - name: Set cron to update PURLs every 10 minutes
+      when: mode == "production"
+      cron: name="update PURLs" minute="*/10" job="PATH=/usr/local/bin:$PATH; {{ cron_job }} >> /var/log/obo-purl-cron 2>&1"
+
+    - name: Disable default Apache site
+      command: a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default.conf
+      notify: restart apache
+
+    - name: Make the PURL site available
+      template: src=etc_apache2_sites-available_site.j2 dest="/etc/apache2/sites-available/{{ repo }}.conf" group=root owner=root force=yes
+      notify: restart apache
+
+    - name: Enable the PURL site
+      command: "a2ensite {{ repo }}.conf creates=/etc/apache2/sites-enabled/{{ repo }}.conf"
+      notify: restart apache
+

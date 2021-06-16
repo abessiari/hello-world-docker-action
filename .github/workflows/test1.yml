@@ -14,4 +14,4 @@ jobs:
           docker build -f docker/Dockerfile -t purl:latest .
       - name: Run Tests 
         run: |
-          docker run -t purl:latest adam 
+          docker run -t purl:latest ls -l /

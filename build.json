@@ -1,0 +1,106 @@
+{
+  "build": {
+    "id": 225750692,
+    "repository_id": 13460241,
+    "commit_id": 545916566,
+    "number": "2223",
+    "event_type": "push",
+    "pull_request": false,
+    "pull_request_title": null,
+    "pull_request_number": null,
+    "config": {
+      "language": "python",
+      "os": [
+        "linux"
+      ],
+      "dist": "trusty",
+      "sudo": true,
+      "python": [
+        "3.5"
+      ],
+      "install": [
+        "sudo pip install ansible==2.1"
+      ],
+      "script": [
+        "cd tools",
+        "echo 'localhost' > hosts",
+        "ansible-playbook -i hosts -e 'mode=travis' --connection=local site.yml",
+        "cd ..",
+        "sudo cp -r `pwd` /var/www/purl.obolibrary.org",
+        "cd /var/www/purl.obolibrary.org",
+        "sudo make all test"
+      ],
+      "notifications": {
+        "email": [
+          {
+            "recipients": [
+              "james@overton.ca"
+            ]
+          },
+          {
+            "recipients": [
+              "cjmungall@lbl.gov"
+            ]
+          }
+        ]
+      },
+      "group": "stable"
+    },
+    "state": "errored",
+    "started_at": "2021-05-12T14:42:17Z",
+    "finished_at": "2021-05-12T14:42:49Z",
+    "duration": 32,
+    "job_ids": [
+      504949252
+    ]
+  },
+  "commit": {
+    "id": 545916566,
+    "sha": "1fc2a9b4d6e319fe576b32bc5c4ce17e87588109",
+    "branch": "jamesaoverton-ontoneo-2",
+    "branch_is_default": false,
+    "tag": null,
+    "message": "Make releases PURL a prefix",
+    "committed_at": "2021-05-12T14:41:32Z",
+    "author_name": "James A. Overton",
+    "author_email": "james@overton.ca",
+    "committer_name": "GitHub",
+    "committer_email": "noreply@github.com",
+    "compare_url": "https://github.com/OBOFoundry/purl.obolibrary.org/compare/f5ead02b2192...1fc2a9b4d6e3"
+  },
+  "jobs": [
+    {
+      "id": 504949252,
+      "repository_id": 13460241,
+      "build_id": 225750692,
+      "commit_id": 545916566,
+      "state": "errored",
+      "number": "2223.1",
+      "config": {
+        "os": "linux",
+        "python": "3.5",
+        "language": "python",
+        "dist": "trusty",
+        "sudo": true,
+        "install": [
+          "sudo pip install ansible==2.1"
+        ],
+        "script": [
+          "cd tools",
+          "echo 'localhost' > hosts",
+          "ansible-playbook -i hosts -e 'mode=travis' --connection=local site.yml",
+          "cd ..",
+          "sudo cp -r `pwd` /var/www/purl.obolibrary.org",
+          "cd /var/www/purl.obolibrary.org",
+          "sudo make all test"
+        ]
+      },
+      "started_at": "2021-05-12T14:42:17Z",
+      "finished_at": "2021-05-12T14:42:49Z",
+      "queue": "builds.gce-oss",
+      "allow_failure": null,
+      "tags": null
+    }
+  ]
+}
+

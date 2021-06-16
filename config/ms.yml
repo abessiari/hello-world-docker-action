@@ -1,0 +1,12 @@
+# PURL configuration for http://purl.obolibrary.org/obo/ms
+
+idspace: MS
+base_url: /obo/ms
+
+products:
+- ms.owl: http://ontologies.berkeleybop.org/ms.owl
+- ms.obo: http://ontologies.berkeleybop.org/ms.obo
+
+term_browser: ontobee
+example_terms:
+- MS_0000000

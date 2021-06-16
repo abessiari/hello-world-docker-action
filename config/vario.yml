@@ -1,0 +1,12 @@
+# PURL configuration for http://purl.obolibrary.org/obo/vario
+
+idspace: VariO
+base_url: /obo/vario
+
+products:
+- vario.owl: http://ontologies.berkeleybop.org/vario.owl
+- vario.obo: http://www.variationontology.org/vario_download/vario.obo
+
+term_browser: ontobee
+example_terms:
+- VariO_0001

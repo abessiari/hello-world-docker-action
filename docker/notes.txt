@@ -1,0 +1,24 @@
+dded a task to install s3cmd and a task to test s3 access to bucket using s3 ls.
+
+Tested using EC2 instance.
+ansible-playbook -i "18.236.75.XXX," site.yml
+ansible-playbook -i "18.236.75.XXX," server-overlay.yml
+sudo logrotate -v -f /etc/logrotate.d/apache2 to force the logs to go into the s3 bucket.'
+
+By default, the server_overlay playbook assumes the credentials are stored in the home directory:
+var_s3_push_credentials: "~/.s3cfg"
+
+A minimal s3cfg file looks like so: Note the keys differ from aws cli config file
+[default]
+access_key = XXXX
+secret_key = YYYY
+
+Tested using MacOs:
+ansible 2.7.0 and ansible 2.1.0
+python version = 2.7.14
+
+EC2 instance specs:
+VERSION="14.04.6 LTS, Trusty Tahr"
+Python 2.7.6
+python3 --version: Python 3.4.
+s3cmd --version: s3cmd version 2.1.0

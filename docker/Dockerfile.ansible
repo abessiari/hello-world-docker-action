@@ -1,0 +1,39 @@
+# ARG base_image=ubuntu:trusty
+# ARG base_image=geerlingguy/docker-ubuntu1404-ansible
+ARG base_image=brentwg/docker-ubuntu1404-ansible:latest
+ARG domain=purl.obolibrary.org
+ARG repo=purl.obolibrary.org
+  
+FROM ${base_image} AS base
+
+# RUN apt-get update \
+#   && apt-get install -y ntp git apache2 python3-pip \
+#    && pip3 install PyYAML pathlib2  jsonschema==3.0.2 \
+#    && apt-get -qq purge && apt-get -qq clean && rm -rf /var/lib/apt/lists/*
+
+# ADD . /var/www/purl.obolibrary.org
+ADD . /tmp 
+
+# RUN a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default.conf
+# ADD /var/www/purl.obolibrary.org/tools/etc_apache2_sites-available_site.j2 /etc/apache2/sites-available/${repo}.conf
+
+root@a355c766fe08:/tmp/tools# history
+    1  cd /tmp/
+    2  ls
+    3  echo 'localhost' > host
+    4  ansible-playbook -i hosts --connection=local site.yml
+    5  cd tools/
+    6  ansible-playbook -i hosts --connection=local site.yml
+    7  echo 'localhost' > host
+    8  ansible-playbook -i hosts --connection=local site.yml
+    9  vi site.yml 
+   10  ansible-playbook -i hosts --connection=local site.yml
+   11  service apache2 status
+   12  ls
+   13  pwd
+   14  ansible-playbook server-overlay.yml
+   15  touch ~/.s3cfg
+   16  ansible-playbook server-overlay.yml
+   17  vi roles/logrotate-to-s3/tasks/main.yml 
+   18  history
+

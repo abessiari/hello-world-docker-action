@@ -1,0 +1,45 @@
+conda avtivate test_purl_obolibrary
+PR: https://github.com/OBOFoundry/purl.obolibrary.org/pull/747
+added a task to install s3cmd and a task to test s3 access to bucket using s3 ls.
+
+Tested using EC2 instance.
+ansible-playbook -i "18.236.75.XXX," site.yml
+ansible-playbook -i "18.236.75.XXX," server-overlay.yml
+sudo logrotate -v -f /etc/logrotate.d/apache2 to force the logs to go into the s3 bucket.'
+
+By default, the server_overlay playbook assumes the credentials are stored in the home directory:
+var_s3_push_credentials: "~/.s3cfg"
+
+A minimal s3cfg file looks like so: Note the keys differ from aws cli config file
+[default]
+access_key = XXXX
+secret_key = YYYY
+
+Tested using MacOs:
+ansible 2.7.0 and ansible 2.1.0
+python version = 2.7.14
+
+EC2 instance specs:
+VERSION="14.04.6 LTS, Trusty Tahr"
+Python 2.7.6
+python3 --version: Python 3.4.
+s3cmd --version: s3cmd version 2.1.0
+
+SSH into docker:
+https://phoenixnap.com/kb/how-to-ssh-into-docker-container
+
+docker run --rm  -v `pwd`:/purl -it  geerlingguy/docker-ubuntu1404-ansible:latest /bin/bash
+docker run --rm --name trusty -v `pwd`:/purl -it ubuntu:trusty /bin/bash
+
+https://hub.docker.com/r/geerlingguy/docker-ubuntu1404-ansible/
+
+REMOVE PPA 
+https://itsfoss.com/how-to-remove-or-delete-ppas-quick-tip/
+
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html#finding-an-ami-aws-cli
+
+
+https://askubuntu.com/questions/216692/where-is-the-user-crontab-stored
+crontab -l
+cat  /var/spool/cron/crontabs/root

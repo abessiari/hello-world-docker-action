@@ -1,0 +1,16 @@
+# PURL configuration for http://purl.obolibrary.org/obo/caro
+
+idspace: CARO
+base_url: /obo/caro
+
+products:
+- caro.owl: https://raw.githubusercontent.com/obophenotype/caro/master/src/ontology/caro.owl
+
+term_browser: ontobee
+example_terms:
+- CARO_0000000
+
+entries:
+- prefix: /
+  replacement: https://raw.githubusercontent.com/obophenotype/caro/master/src/ontology/
+

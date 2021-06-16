@@ -1,0 +1,8 @@
+version: '3'
+services:
+  purl:
+    hostname: purl 
+    container_name: purl 
+    image: purl 
+    ports:
+      - 9080:80

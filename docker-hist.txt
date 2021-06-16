@@ -1,0 +1,164 @@
+  350  ps -ef | grep docker
+  377  cat docs/docker.md 
+  393  ps -ef | grep docker
+  399  docker ps 
+  546  history | grep docker
+  569  mkdir docker
+  570  cd docker/
+  589  docker build -t purl .
+  590  docker run -it purl /bin/bash
+  591  docker ps -a
+  592  docker rm 4a1e837f1b7c
+  595  docker build -f docker/Dockerfile  -t purl .
+  598  docker run --name purl -v `pwd`:/data -it purl /bin/bash
+  599  docker build -f docker/Dockerfile  -t purl .
+  600  docker build -f docker/Dockerfile  -t purl .
+  601  docker build -f docker/Dockerfile  -t purl .
+  602  docker pull ansible-trusty 
+  603  docker pull ansible_trusty 
+  604  docker pull ubuntu1404-ansible
+  605  docker pull geerlingguy/docker-ubuntu1404-ansible
+  607  docker pull geerlingguy/docker-ubuntu1404-ansible
+  608  docker build -f docker/Dockerfile  -t purl .
+  609  docker rm purl
+  610  docker run --name purl -v `pwd`:/data -it purl /bin/bash
+  611  docker rm purl
+  612  docker run --name purl -v `pwd`:/data -it purl /bin/bash
+  613  docker rm purl
+  614  docker build -f docker/Dockerfile  -t purl .
+  615  docker run --name purl -v `pwd`:/data -it purl /bin/bash
+  617  vi docker/Dockerfile
+  623  vi docker/Dockerfile
+  626  docker rm purl
+  628  vi docker/Dockerfile
+  629  vi docker/Dockerfile
+  630  docker build -f docker/Dockerfile  -t purl tools
+  631  vi docker/Dockerfile
+  632  docker build -f docker/Dockerfile  -t purl tools
+  633  vi docker/Dockerfile
+  634  docker build -f docker/Dockerfile  -t purl tools
+  635  vi docker/Dockerfile
+  636  docker build -f docker/Dockerfile  -t purl tools
+  637  vi docker/Dockerfile
+  638  docker build -f docker/Dockerfile  -t purl tools
+  639  vi docker/Dockerfile
+  640  docker build -f docker/Dockerfile  -t purl tools
+  641  docker run --name purl -v `pwd`:/data -it purl /bin/bash
+  642  docker rm purl
+  643  docker run --name purl -v `pwd`:/data -it purl /bin/bash
+  644  docker rm purl
+  646  vi docker/Dockerfile
+  647  docker build -f docker/Dockerfile  -t purl tools
+  648  docker build -f docker/Dockerfile  -t purl tools
+  650  history | grep docker
+  651  docker run --r -it brentwg/docker-ubuntu1404-ansible:latest /bin/bash
+  652  docker run --rm  -it brentwg/docker-ubuntu1404-ansible:latest /bin/bash
+  653  docker run --rm  -it brentwg/docker-ubuntu1404-ansible:latest /bin/bash
+  654  vi docker/Dockerfile
+  655  vi docker/Dockerfile
+  657  docker build -f docker/Dockerfile  -t purl tools
+  658  docker run --rm  -it purl  /bin/bash
+  660  docker build -f docker/Dockerfile  -t purl tools
+  661  docker build -f docker/Dockerfile  -t purl tools
+  662  docker run --rm  -it purl  /bin/bash
+  665  docker run --rm  -it purl  /bin/bash
+  666  docker build -f docker/Dockerfile  -t purl tools
+  668  docker build -f docker/Dockerfile  -t purl tools
+  670  docker build -f docker/Dockerfile  -t purl tools
+  673  docker run --rm  -it purl  /bin/bash
+  681  vi docker/travis.yml 
+  684  docker build -f docker/Dockerfile  -t purl tools
+  685  docker build -f docker/Dockerfile  -t purl tools
+  686  docker build -f docker/Dockerfile  -t purl tools
+  687  docker run   -it purl  /bin/bash
+  690  cp docker/Dockerfile docker/Dockerfile.ansible.2.9
+  691  vi docker/Dockerfile
+  692* docker run  --r -it purl  /bin/bash
+  693  docker rm purl
+  694  docker run   -it purl  /bin/bash
+  701  vi docker/Dockerfile
+  706  history | grep docker
+  707  docker build -f docker/Dockerfile  -t purl tools
+  708  history | grep docker
+  709  docker ps -a
+  710  docker run --rm  --name purl  -it purl  /bin/bash
+  711  docker run --rm  --name purl  -w `pwd`:/data -it purl  /bin/bash
+  712  docker run --rm  --name purl  -v `pwd`:/data -it purl  /bin/bash
+  713  vi docker/Dockerfile
+  714  docker build -f docker/Dockerfile  -t purl tools
+  715  docker run --rm  --name purl  -v `pwd`:/data -it purl  /bin/bash
+  716  docker build -f docker/Dockerfile  -t purl tools
+  717  docker build -f docker/Dockerfile  -t purl tools
+  718  docker run --rm  --name purl  -v `pwd`:/data -it purl  /bin/bash
+  721  vi docker/Dockerfile
+  726  docker run --rm  --name purl  -v `pwd`:/data -it purl  /bin/bash
+  727  docker build -f docker/Dockerfile  -t purl tools
+  728  docker run --rm  --name purl  -v `pwd`:/data -it purl  /bin/bash
+  729  docker build -f docker/Dockerfile  -t purl tools
+  730  docker build -f docker/Dockerfile  -t purl .
+  731  docker run --rm  --name purl  -v `pwd`:/data -it purl  /bin/bash
+  732  docker run   --name purl  -v `pwd`:/data -it purl  
+  733  docker ps -a
+  734  docker rm purl
+  735  docker ps -a
+  736  docker build -f docker/Dockerfile  -t purl .
+  737  docker run --rm  --name purl  -v `pwd`:/data -it purl  /bin/bash
+  738  docker run   --name purl  -v `pwd`:/data -it purl  
+  739  docker run   --name purl  -v `pwd`:/data -it purl  -d
+  740  docker run   --name purl  -v `pwd`:/data -d -it purl 
+  741  docker rm purl
+  742  docker run   --name purl  -v `pwd`:/data -d -it purl -d
+  743  docker ps
+  744  docker ps
+  745  docker ps -a
+  746  docker rm purl
+  747  docker run   --name purl  -v `pwd`:/data -d -itd purl 
+  748  docker ps -a
+  749  docker ps -a
+  750  docker ps 
+  751  docker ps -a
+  752  docker stop purl
+  753  docker run   --name purl  -v `pwd`:/data -d -td purl 
+  754  docker rm purl
+  755  docker run --rm   --name purl  -v `pwd`:/data -d -td purl 
+  756  docker ps -a
+  757  docker exec -it purl /bin/bash 
+  758  docker exec -it purl /bin/bash 
+  759  docker stop purl
+  764  git add docker/Dockerfile
+  767  git add docker/entrypoint.sh 
+  777  docker rm purl
+  785  cp ~/GO/TESTING_MAIN/APACHE/docker-compose.yaml docker/
+  786  vi docker/docker-compose.yaml 
+  787  vi docker/docker-compose.yaml 
+  788  vi docker/docker-compose.yaml 
+  789  docker-compose -f docker/docker-compose.yaml start -d
+  790  docker-compose -f docker/docker-compose.yaml up -d
+  791  vi docker/docker-compose.yaml 
+  792  docker-compose -f docker/docker-compose.yaml up -d
+  793  vi docker/docker-compose.yaml 
+  794  docker-compose -f docker/docker-compose.yaml up -d
+  795  vi docker/docker-compose.yaml 
+  796  docker-compose -f docker/docker-compose.yaml up -d
+  797  docker exec -it purl /bin/bash
+  798  docker-compose -f docker/docker-compose.yaml stop
+  799  docker-compose -f docker/docker-compose.yaml rm
+  800  docker ps
+  801  docker run --rm   --name purl  -v `pwd`:/data -d -td purl /bin/bash
+  802  docker run --rm   --name purl  -v `pwd`:/data -d -td purl /bin/bash
+  803  docker run --rm   --name purl  -v `pwd`:/data  -it  purl /bin/bash
+  804  docker-compose -f docker/docker-compose.yaml rm
+  805  docker-compose -f docker/docker-compose.yaml stop
+  806  docker-compose -f docker/docker-compose.yaml rm
+  807  docker run --rm   --name purl  -v `pwd`:/data  -it  purl /bin/bash
+  808* docker  /purl
+  809  docker-compose -f docker/docker-compose.yaml stop
+  810  docker-compose -f docker/docker-compose.yaml down
+  811  docker-compose -f docker/docker-compose.yaml rm
+  812  docker-compose -f docker/docker-compose.yaml down
+  813  docker ps -a
+  814  docker-compose -f docker/docker-compose.yaml down
+  815  docker rm -f purl
+  816  docker run --rm   --name purl  -v `pwd`:/data  -it  purl /bin/bash
+  819  docker run --rm   --name purl  -v `pwd`:/data  -it  purl /bin/bash
+  820  history | grep docker > docker-hist.txt

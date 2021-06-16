@@ -1,0 +1,12 @@
+# PURL configuration for http://purl.obolibrary.org/obo/zfa
+
+idspace: ZFA
+base_url: /obo/zfa
+
+products:
+- zfa.owl: http://ontologies.berkeleybop.org/zfa.owl
+- zfa.obo: http://ontologies.berkeleybop.org/zfa.obo
+
+term_browser: ontobee
+example_terms:
+- ZFA_0000000
