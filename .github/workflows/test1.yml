@@ -2,9 +2,11 @@ name: GitHub Actions Demo
 on:
   push:
      branches: [ main ]
+     paths-ignore: [ "**.md" ]
 
   pull_request:
      branches: [ main ]
+     paths-ignore: [ "**.md" ]
 
 jobs:
   Explore-GitHub-Actions:
