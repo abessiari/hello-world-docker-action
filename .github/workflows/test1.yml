@@ -44,9 +44,8 @@ jobs:
         run: |
           docker run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
 
-       - name: Move cache
+      - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-
 
