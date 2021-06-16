@@ -1,0 +1,17 @@
+name: GitHub Actions Demo
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - name: Build docker image
+        run: |
+          ls -l docker/Dockerfile
+          docker build -f docker/Dockerfile -t purl:latest .
+      - name: Run Tests 
+        run: |
+          docker run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test 
