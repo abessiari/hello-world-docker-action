@@ -2,8 +2,11 @@ name: Purl GitHub Actions
 
 on:
   push:
-
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   Explore-GitHub-Actions:
