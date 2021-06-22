@@ -6,53 +6,75 @@
 # (i.e. the last time we updated),
 # then pull `master`, run Make, and update .current_build.
 
-import difflib
 import requests
 import subprocess
 import sys
+import os
+from types import SimpleNamespace
 
-api_url = 'https://api.travis-ci.com'
-repo_slug = 'OBOFoundry/purl.obolibrary.org'
-accept_header = {'Accept': 'application/vnd.travis-ci.2.1+json'}
+def git_exec(repo_dir, args):
+        command = ['git', '--work-tree=' + repo_dir] + args.split()
 
-# Get the last build ID from Travis:
-resp = requests.get('{}/repos/{}'.format(api_url, repo_slug), headers=accept_header)
+        with open(os.devnull, 'w') as devnull:
+            result = subprocess.run(command, stdout=subprocess.PIPE, stderr=devnull)
+            code = result.returncode
+
+            if code != 0:
+                raise Exception('command failed:{}, code='.format(subprocess.list2cmdline(command), code))
+
+            return result.stdout.decode('utf-8')
+
+repo_slug = 'abessiari/hello-world-docker-action'
+repo_dir = '/var/www/hello-world-docker-action'
+branch = git_exec(repo_dir, 'branch').split()[1]
+print(branch)
+
+head_sha = git_exec(repo_dir, 'rev-parse HEAD').split()[0]
+print(head_sha)
+# https://github.com/abessiari/hello-world-docker-action.git
+remote_head_sha = git_exec(repo_dir, 
+                           'ls-remote https://github.com/{}.git {}'.format(repo_slug, branch)).split()[0]
+print(remote_head_sha)
+
+if remote_head_sha == head_sha:
+    print('Nothing has been checked in into', branch)
+    sys.exit(1)
+
+api_url = 'https://api.github.com'
+accept_header = {'Accept': 'application/vnd.github.v3+json'}
+resp = requests.get('{}/repos/{}/actions/runs'.format(api_url, repo_slug), headers=accept_header)
+
 if resp.status_code != requests.codes.ok:
-  resp.raise_for_status()
-last_build_id = resp.json()['repo']['last_build_id']
+    resp.raise_for_status()
 
-# Now get the build details:
-resp = requests.get('{}/repos/{}/builds/{}'.format(api_url, repo_slug, last_build_id),
-                    headers=accept_header)
-if resp.status_code != requests.codes.ok:
-  resp.raise_for_status()
-content = resp.json()
+result = SimpleNamespace(**resp.json())
+workflow_runs = map(lambda x: SimpleNamespace(**x), result.workflow_runs)
+workflow_run = next(filter(lambda x: x.head_sha == remote_head_sha, workflow_runs), None)
+if not workflow_run:
+    print('Workflow run not found for ', remote_head_sha)
+    sys.exit(1)
 
-# If the last build did not pass, then do nothing and exit.
-if content['build']['state'] != 'passed':
-  print("Last build is not green. Not updating.", file=sys.stderr)
-  sys.exit(0)
+assert workflow_run.head_branch == branch, 'branch check failed'
+assert workflow_run.event == 'push', 'event check failed'
 
-# Otherwise see if the build description is different from the current build
-print("Last build is green. Checking whether it is new ...")
-build_desc = "#{} {}:    {} {}".format(content['build']['number'], content['build']['state'],
-                                       content['commit']['branch'], content['commit']['message'])
-# We only want to keep the first line of the last build's description for comparison purposes:
-newbuild_lines = build_desc.splitlines(keepends=True)[:1]
-with open('.current_build') as infile:
-  currbuild_lines = infile.readlines()
+if workflow_run.status != 'completed' or workflow_run.conclusion != 'success':
+    print('workflow run failed status/coclusion checks', workflow_run.status, '/', workflow_run.conclusion)
+    sys.exit(1)
 
-diff = list(difflib.unified_diff(currbuild_lines, newbuild_lines))
-if not diff:
-  print("Last build is not new. Not updating.")
-  sys.exit(0)
+print("YYY:", workflow_run.id)
 
-# Output a diff for information purposes and then do a `git pull` and `make` from the current
-# working directory:
-for d in diff:
-  print(d, end='')
-print('\nNew green build available. Updating local repository ...')
+ret = git_exec(repo_dir, 'pull')
+print(ret)
 
-if subprocess.call(["git", "pull"]) == 0 and subprocess.call(["make"]) == 0:
-  with open('.current_build', 'w') as outfile:
-    outfile.write(newbuild_lines.pop())
+head_sha = git_exec(repo_dir, 'rev-parse HEAD').split()[0]
+print(head_sha)
+
+if remote_head_sha != head_sha:
+    print('Something else has been checked in into', branch)
+    sys.exit(1)
+
+if subprocess.call(["make"]) != 0:
+    print('make failed on ', branch)
+    sys.exit(1)
+
+sys.exit(0)
