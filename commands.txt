@@ -1,0 +1,18 @@
+https://www.w3docs.com/learn-git/git-fetch.html
+git rev-parse HEAD 
+git ls-remote `git remote -v` HEAD
+git fetch
+git diff --name-only main origin/main
+git diff --name-only main...origin/main
+
+wget https://github.com/abessiari/hello-world-docker-action/actions/workflows/build.yml/badge.svg?branch=main
+
+wget https:/repos/{owner}/{repo}/actions/workflows
+wget https://api.github.com/repos/abessiari/hello-world-docker-action/actions/workflows
+
+curl -H "Accept: application/vnd.github.v3+json"   https://api.github.com/repos/abessiari/hello-world-docker-action/actions/workflows/build.yml
+
+curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/abessiari/hello-world-docker-action/actions/jobs/38
+
+https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api#authentication
+https://docs.github.com/en/rest/reference/actions
