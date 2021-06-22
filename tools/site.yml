@@ -10,8 +10,8 @@
   vars:
     mode:      production
     domain:    purl.obolibrary.org
-    owner:     OBOFoundry
-    repo:      purl.obolibrary.org
+    owner:     abessiari
+    repo:      hello-world-docker-action
     repo_dir:  "/var/www/{{ repo }}"
     repo_url:  "https://github.com/{{ owner }}/{{ repo }}.git"
     cron_job:  "cd {{ repo_dir }} && make safe-update"
