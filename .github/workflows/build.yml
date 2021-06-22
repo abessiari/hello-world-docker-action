@@ -1,13 +1,7 @@
 name: Purl GitHub Actions
 
 on:
-  push:
-     branches: [ pipi  ]
-     paths-ignore: [ "**.md" ]
-
   pull_request:
-     branches: [ pipi ]
-     paths-ignore: [ "**.md" ]
 
 jobs:
   Explore-GitHub-Actions:
@@ -57,5 +51,6 @@ jobs:
 
       - name: Run Tests 
         run: |
-          docker run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test
+          # docker run -w /var/www/purl.obolibrary.org -t purl:latest sudo make all test
+          docker run -w /var/www/hello-world-docker-action -t purl:latest sudo make all test
 
