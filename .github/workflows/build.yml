@@ -1,6 +1,8 @@
 name: Purl GitHub Actions
 
 on:
+  push:
+
   pull_request:
 
 jobs:
