@@ -12,26 +12,30 @@ import sys
 import os
 from types import SimpleNamespace
 
+
 def printf(fmt, *varargs):
     sys.stdout.write(fmt % varargs)
 
-def git_exec(repo_dir, args):
-        git_dir = os.path.join(repo_dir, '.git')
-        command = ['git', '--work-tree=' + repo_dir, '--git-dir=' + git_dir] + args.split()
 
-        with open(os.devnull, 'w') as devnull:
-            result = subprocess.run(command, stdout=subprocess.PIPE, stderr=devnull)
-            code = result.returncode
+def git_exec(repo, args):
+    git_dir = os.path.join(repo, '.git')
+    command = ['git', '--work-tree=' + repo, '--git-dir=' + git_dir] + args.split()
 
-            if code != 0:
-                raise Exception('command failed:{}, code='.format(subprocess.list2cmdline(command), code))
+    with open(os.devnull, 'w') as devnull:
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=devnull)
+        code = result.returncode
 
-            return result.stdout.decode('utf-8').strip()
+        if code != 0:
+            raise Exception('failed:{}, code='.format(subprocess.list2cmdline(command), code))
 
-def get_repo_slug(repo_dir):
-    url = git_exec(repo_dir, 'config --get remote.origin.url')
+        return result.stdout.decode('utf-8').strip()
+
+
+def get_repo_slug(repo):
+    url = git_exec(repo, 'config --get remote.origin.url')
     pattern = 'github.com/'
     return url[url.index(pattern) + len(pattern):url.rindex('.git')]
+
 
 if len(sys.argv) > 1:
     repo_dir = sys.argv[1]
@@ -58,7 +62,7 @@ printf('remote_head_sha=%s\n', remote_head_sha)
 
 if remote_head_sha == head_sha:
     printf('Nothing has been checked in into %s\n', branch)
-    #sys.exit(1)
+    sys.exit(1)
 
 api_url = 'https://api.github.com'
 accept_header = {'Accept': 'application/vnd.github.v3+json'}
@@ -67,8 +71,8 @@ resp = requests.get('{}/repos/{}/actions/runs'.format(api_url, repo_slug), heade
 if resp.status_code != requests.codes.ok:
     resp.raise_for_status()
 
-result = SimpleNamespace(**resp.json())
-workflow_runs = map(lambda x: SimpleNamespace(**x), result.workflow_runs)
+json_result = SimpleNamespace(**resp.json())
+workflow_runs = map(lambda x: SimpleNamespace(**x), json_result.workflow_runs)
 workflow_run = next(filter(lambda x: x.head_sha == remote_head_sha, workflow_runs), None)
 
 if not workflow_run:
@@ -79,8 +83,8 @@ assert workflow_run.head_branch == branch, 'branch check failed'
 assert workflow_run.event == 'push', 'event check failed'
 
 if workflow_run.status != 'completed' or workflow_run.conclusion != 'success':
-    printf('workflow run failed checks: status=%s conclusion=%s\n', 
-            workflow_run.status, workflow_run.conclusion)
+    printf('workflow run failed checks: status=%s conclusion=%s\n',
+           workflow_run.status, workflow_run.conclusion)
     sys.exit(1)
 
 printf("workflow: id=%d, run_number=%d\n", workflow_run.id, workflow_run.run_number)
