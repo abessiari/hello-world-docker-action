@@ -16,7 +16,8 @@ def printf(fmt, *varargs):
     sys.stdout.write(fmt % varargs)
 
 def git_exec(repo_dir, args):
-        command = ['git', '--work-tree=' + repo_dir] + args.split()
+        git_dir = os.path.join(repo_dir, '.git')
+        command = ['git', '--work-tree=' + repo_dir, '--git-dir=' + git_dir] + args.split()
 
         with open(os.devnull, 'w') as devnull:
             result = subprocess.run(command, stdout=subprocess.PIPE, stderr=devnull)
@@ -40,19 +41,24 @@ else:
 repo_slug = get_repo_slug(repo_dir)
 printf('repo_slug=%s\n', repo_slug)
 
-branch = git_exec(repo_dir, 'branch').split()[1]
+branch = git_exec(repo_dir, 'name-rev --name-only HEAD')
 printf('branch=%s\n', branch)
 
-head_sha = git_exec(repo_dir, 'rev-parse {}'.format(branch)).split()[0]
+head_sha = git_exec(repo_dir, 'rev-parse {}'.format(branch))
 printf('head_sha=%s\n', head_sha)
 
-remote_head_sha = git_exec(repo_dir, 
-                           'ls-remote https://github.com/{}.git {}'.format(repo_slug, branch)).split()[0]
+ret = git_exec(repo_dir, 'ls-remote https://github.com/{}.git {}'.format(repo_slug, branch)).split()
+
+if not ret:
+    printf('Not a remote branch  %s\n', branch)
+    sys.exit(1)
+
+remote_head_sha = ret[0]
 printf('remote_head_sha=%s\n', remote_head_sha)
 
 if remote_head_sha == head_sha:
     printf('Nothing has been checked in into %s\n', branch)
-    sys.exit(1)
+    #sys.exit(1)
 
 api_url = 'https://api.github.com'
 accept_header = {'Accept': 'application/vnd.github.v3+json'}
@@ -83,12 +89,13 @@ git_exec(repo_dir, 'pull')
 head_sha = git_exec(repo_dir, 'rev-parse {}'.format(branch)).split()[0]
 printf('head_sha_after_git_pull=%s\n', head_sha)
 
-if remote_head_sha == head_sha:
+if remote_head_sha != head_sha:
     printf('Something else has been checked in into %s\n', branch)
     sys.exit(1)
 
-if subprocess.call(["make"]) == 0:
+if subprocess.call(["make"]) != 0:
     printf('make failed on %s\n', branch)
     sys.exit(1)
 
+printf('updated successfully on %s\n', branch)
 sys.exit(0)
