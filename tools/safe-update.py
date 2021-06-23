@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Check Travis CI build status for the `master` branch of OBOFoundry/purl.obolibrary.org
+# Check Github CI build status for the `master` branch of OBOFoundry/purl.obolibrary.org
 # If `master` is green (i.e. all tests are passing),
 # and the build number is greater than the current build
 # (i.e. the last time we updated),
@@ -12,6 +12,9 @@ import sys
 import os
 from types import SimpleNamespace
 
+def printf(fmt, *varargs):
+    sys.stdout.write(fmt % varargs)
+
 def git_exec(repo_dir, args):
         command = ['git', '--work-tree=' + repo_dir] + args.split()
 
@@ -22,22 +25,33 @@ def git_exec(repo_dir, args):
             if code != 0:
                 raise Exception('command failed:{}, code='.format(subprocess.list2cmdline(command), code))
 
-            return result.stdout.decode('utf-8')
+            return result.stdout.decode('utf-8').strip()
 
-repo_slug = 'abessiari/hello-world-docker-action'
-repo_dir = '/var/www/hello-world-docker-action'
+def get_repo_slug(repo_dir):
+    url = git_exec(repo_dir, 'config --get remote.origin.url')
+    pattern = 'github.com/'
+    return url[url.index(pattern) + len(pattern):url.rindex('.git')]
+
+if len(sys.argv) > 1:
+    repo_dir = sys.argv[1]
+else:
+    repo_dir = os.getcwd()
+
+repo_slug = get_repo_slug(repo_dir)
+printf('repo_slug=%s\n', repo_slug)
+
 branch = git_exec(repo_dir, 'branch').split()[1]
-print(branch)
+printf('branch=%s\n', branch)
 
-head_sha = git_exec(repo_dir, 'rev-parse HEAD').split()[0]
-print(head_sha)
-# https://github.com/abessiari/hello-world-docker-action.git
+head_sha = git_exec(repo_dir, 'rev-parse {}'.format(branch)).split()[0]
+printf('head_sha=%s\n', head_sha)
+
 remote_head_sha = git_exec(repo_dir, 
                            'ls-remote https://github.com/{}.git {}'.format(repo_slug, branch)).split()[0]
-print(remote_head_sha)
+printf('remote_head_sha=%s\n', remote_head_sha)
 
 if remote_head_sha == head_sha:
-    print('Nothing has been checked in into', branch)
+    printf('Nothing has been checked in into %s\n', branch)
     sys.exit(1)
 
 api_url = 'https://api.github.com'
@@ -50,31 +64,31 @@ if resp.status_code != requests.codes.ok:
 result = SimpleNamespace(**resp.json())
 workflow_runs = map(lambda x: SimpleNamespace(**x), result.workflow_runs)
 workflow_run = next(filter(lambda x: x.head_sha == remote_head_sha, workflow_runs), None)
+
 if not workflow_run:
-    print('Workflow run not found for ', remote_head_sha)
+    printf('Workflow run not found for %s\n', remote_head_sha)
     sys.exit(1)
 
 assert workflow_run.head_branch == branch, 'branch check failed'
 assert workflow_run.event == 'push', 'event check failed'
 
 if workflow_run.status != 'completed' or workflow_run.conclusion != 'success':
-    print('workflow run failed status/coclusion checks', workflow_run.status, '/', workflow_run.conclusion)
+    printf('workflow run failed checks: status=%s conclusion=%s\n', 
+            workflow_run.status, workflow_run.conclusion)
     sys.exit(1)
 
-print("YYY:", workflow_run.id)
+printf("workflow: id=%d, run_number=%d\n", workflow_run.id, workflow_run.run_number)
 
-ret = git_exec(repo_dir, 'pull')
-print(ret)
+git_exec(repo_dir, 'pull')
+head_sha = git_exec(repo_dir, 'rev-parse {}'.format(branch)).split()[0]
+printf('head_sha_after_git_pull=%s\n', head_sha)
 
-head_sha = git_exec(repo_dir, 'rev-parse HEAD').split()[0]
-print(head_sha)
-
-if remote_head_sha != head_sha:
-    print('Something else has been checked in into', branch)
+if remote_head_sha == head_sha:
+    printf('Something else has been checked in into %s\n', branch)
     sys.exit(1)
 
-if subprocess.call(["make"]) != 0:
-    print('make failed on ', branch)
+if subprocess.call(["make"]) == 0:
+    printf('make failed on %s\n', branch)
     sys.exit(1)
 
 sys.exit(0)
