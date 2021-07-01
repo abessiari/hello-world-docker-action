@@ -8,9 +8,6 @@ else
     echo " The cron service has been restarted." 
 fi
 
-exec "$@"
-
-
 if [[ ! "$(service apache2 status)" =~ "start/running" ]]
 then
     echo " The Apache service has been stopped. It has now been restarted." 
