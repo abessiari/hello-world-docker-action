@@ -89,12 +89,23 @@ if workflow_run.status != 'completed' or workflow_run.conclusion != 'success':
 
 printf("workflow: id=%d, run_number=%d\n", workflow_run.id, workflow_run.run_number)
 
-git_exec(repo_dir, 'pull')
+   34  git fetch origin
+   35  git rev-parse main
+   36  git ls-remote https://github.com/abessiari/hello-world-docker-action main
+   37  git merge fced10f0079ecc85f37570c8fd052d81c62f1939
+   38  git branch
+   39  git pull
+   40  git rev-parse main
+
+
+git_exec(repo_dir, 'fetch origin')
+git_exec(repo_dir, 'merge ' + remote_head_sha)
+
 head_sha = git_exec(repo_dir, 'rev-parse {}'.format(branch)).split()[0]
 printf('head_sha_after_git_pull=%s\n', head_sha)
 
 if remote_head_sha != head_sha:
-    printf('Something else has been checked in into %s\n', branch)
+    printf('Something went terribly wrong when merging latest hash  %s\n', branch)
     sys.exit(1)
 
 if subprocess.call(["make"]) != 0:
