@@ -37,6 +37,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-single-buildx
 
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+
       - name: Build image
         uses: docker/build-push-action@v2
         with:
