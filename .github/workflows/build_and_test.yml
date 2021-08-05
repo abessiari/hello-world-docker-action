@@ -64,4 +64,5 @@ jobs:
           # docker run -w /var/www/hello-world-docker-action -t purl:latest sudo make all test
           docker run -w /var/www/hello-world-docker-action -t purl:latest git name-rev --name-only HEAD
           docker run -w /var/www/hello-world-docker-action -t purl:latest git rev-parse main
+          docker run -w /var/www/hello-world-docker-action -t purl:latest sudo make all test
 
