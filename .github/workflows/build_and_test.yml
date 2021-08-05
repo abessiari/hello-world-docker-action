@@ -56,6 +56,6 @@ jobs:
 
       - name: Run Tests 
         run: |
-          # docker run -w /var/www/hello-world-docker-action -t purl:latest sudo make all test
-          docker run --rm -w /var/www/hello-world-docker-action -t purl:latest ls -l 
+          # docker run --rm -w /var/www/hello-world-docker-action -t purl:latest ls -l 
+          docker run -w /var/www/hello-world-docker-action -t purl:latest sudo make all test
 
